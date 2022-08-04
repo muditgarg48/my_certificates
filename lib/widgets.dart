@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'tools.dart';
 
 Widget printImage(String name) {
   return Image.asset(name, fit: BoxFit.contain);
@@ -40,22 +41,13 @@ Widget controlPanel(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               IconButton(
-                onPressed: previousPage,
-                icon: const Icon(Icons.arrow_circle_up_rounded),
-              ),
-              IconButton(
-                onPressed: homePage,
-                icon: const Icon(Icons.home_rounded),
-              ),
-              IconButton(
-                onPressed: nextPage,
-                icon: const Icon(Icons.arrow_circle_down_rounded),
+                onPressed: () => launchURL("https://muditgarg48.github.io"),
+                icon: const Icon(Icons.language_rounded),
               ),
             ],
           ),
         ],
       ),
-      Container(),
       Row(
         children: [
           Column(
@@ -63,7 +55,7 @@ Widget controlPanel(
             children: [
               IconButton(
                 onPressed: previousPage,
-                icon: const Icon(Icons.arrow_circle_up_rounded),
+                icon: const Icon(Icons.keyboard_arrow_up_rounded),
               ),
               IconButton(
                 onPressed: homePage,
@@ -71,7 +63,7 @@ Widget controlPanel(
               ),
               IconButton(
                 onPressed: nextPage,
-                icon: const Icon(Icons.arrow_circle_down_rounded),
+                icon: const Icon(Icons.keyboard_arrow_down_rounded),
               ),
             ],
           ),

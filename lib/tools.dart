@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 Future<dynamic> getLedger(String link) async {
@@ -54,4 +53,13 @@ void launchURL(String url) async {
   } else {
     throw 'Could not launch $url';
   }
+}
+
+List<Color> toColorWidget(List colors) {
+  List<Color> actualColors = [];
+  for (var color in colors) {
+    var actualColor = Color(int.parse(color));
+    actualColors.add(actualColor);
+  }
+  return actualColors;
 }

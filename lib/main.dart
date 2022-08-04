@@ -21,8 +21,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         scrollbarTheme: ScrollbarThemeData(
           thumbColor: MaterialStateProperty.all(Colors.black),
-          trackColor: MaterialStateProperty.all(Colors.transparent),
+          trackColor: MaterialStateProperty.all(Colors.black.withOpacity(0.3)),
+          interactive: true,
           crossAxisMargin: 10,
+          mainAxisMargin: 10,
         ),
       ),
       home: const MyHomePage(),
@@ -34,10 +36,10 @@ class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomePage> createState() => MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePageState extends State<MyHomePage> {
   late int firstPage;
   late int lastPage;
   PageController pageController = PageController();
@@ -52,19 +54,26 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    pageController.dispose();
+    pageScroll.dispose();
+    super.dispose();
+  }
+
   void getCertifications() async {
     var data = await getLedger("assets/certificate_ledger.json");
     setState(() {
       certificates = data;
-      lastPage = certificates.length;
+      lastPage = certificates.length + 1;
     });
   }
 
   Widget printDetails(Map certificate) {
     String title = certificate["title"];
     DateTime issueDate = DateTime.parse(certificate["issue_date"]);
-    String issueCompany = certificate["company"];
-    Color companyColor = Color(int.parse(certificate["company_color"]));
+    List issueCompanies = certificate["companies"];
+    List companyColors = toColorWidget(certificate["companies_colors"]);
     String certificateID = certificate["certification_id"];
     String category = certificate["category"];
     String verifyLink = certificate["verify_link"];
@@ -79,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
           stops: const [0.95, 0.95],
           colors: [
             Colors.white,
-            companyColor,
+            companyColors[0],
           ],
         ),
       ),
@@ -92,6 +101,14 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               SizedBox(width: MediaQuery.of(context).size.width / 6),
               TextButton(
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      side: const BorderSide(color: Colors.blue),
+                    ),
+                  ),
+                ),
                 onPressed: () => setState(() => opacity = 1 - opacity),
                 child: Row(
                   children: const [
@@ -131,14 +148,24 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
           const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              shape: const StadiumBorder(),
-              primary: companyColor,
-              onPrimary: Colors.white,
-            ),
-            child: SelectableText(issueCompany),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (int i = 0; i < issueCompanies.length; i++)
+                Container(
+                  margin: const EdgeInsets.all(5),
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      shape: const StadiumBorder(),
+                      primary: companyColors[i],
+                      onPrimary: Colors.white,
+                    ),
+                    child: SelectableText(issueCompanies[i]),
+                  ),
+                ),
+            ],
           ),
           const SizedBox(height: 20),
           OutlinedButton(
@@ -153,13 +180,14 @@ class _MyHomePageState extends State<MyHomePage> {
               const Icon(Icons.numbers),
               const SizedBox(width: 10),
               TextButton(
-                  child: Text("ID: $certificateID"),
-                  onPressed: () => launchURL(verifyLink)),
+                child: Text("ID: $certificateID"),
+                onPressed: () => launchURL(verifyLink),
+              ),
             ],
           ),
           const SizedBox(height: 20),
           Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
               Row(
@@ -170,7 +198,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text("Topics Covered:"),
                 ],
               ),
-              for (var topic in topics) Text(topic)
+              for (var topic in topics) Text("+ $topic")
             ],
           ),
           SizedBox(height: MediaQuery.of(context).size.height / 8),
@@ -179,7 +207,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget printCertificates(Map certificate) {
+  Widget printCertificate(Map certificate) {
     return Container(
       padding: const EdgeInsets.all(8.0),
       child: Stack(
@@ -217,13 +245,15 @@ class _MyHomePageState extends State<MyHomePage> {
           Scrollbar(
             controller: pageScroll,
             child: PageView(
+              padEnds: true,
               onPageChanged: (_) => setState(() => opacity = 0),
               scrollDirection: Axis.vertical,
               controller: pageController,
               children: [
                 homeSlide(context),
                 for (var certificate in certificates)
-                  printCertificates(certificate),
+                  printCertificate(certificate),
+                const Center(child: Text("\"Always keep learning\"")),
               ],
             ),
           ),
@@ -253,7 +283,7 @@ class _MyHomePageState extends State<MyHomePage> {
           body: theBody(),
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () => setState(() => opacity = 1 - opacity),
-            backgroundColor: Colors.transparent.withOpacity(0.2),
+            backgroundColor: Colors.transparent.withOpacity(0.3),
             label: Row(
               children: const [
                 Icon(Icons.sort),
