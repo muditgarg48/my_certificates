@@ -1,0 +1,156 @@
+[
+    {
+        "title": "Data Structures Certificate of Completion",
+        "file_name": "UCS301_Data_Structures_Completion_Certificate.png",
+        "issue_date": "20210301",
+        "company_color": "0xFFF44336",
+        "company": "Thapar Institute of Engineering and Technology",
+        "category": "Course Curriculum",
+        "certification_id": "EVd5t1Dauk",
+        "verify_link":"",
+        "topics_covered":["Data Structures"]
+    },
+    {
+        "title": "Operating Systems Certificate of Completion",
+        "file_name": "UCS303_Operating_Systems_Completion_Certificate.png",
+        "issue_date": "20210302",
+        "company_color": "0xFFF44336",
+        "company": "Thapar Institute of Engineering and Technology",
+        "category": "Course Curriculum",
+        "certification_id": "1IJnowShmF",
+        "verify_link":"",
+        "topics_covered":["Operating System and Algorithms"]
+    },
+    {
+        "title": "Practical Computing Certificate of Completion",
+        "file_name": "UCS311_Practical_Computing_Completion_Certificate.png",
+        "issue_date": "20210302",
+        "company_color": "0xFFF44336",
+        "company": "Thapar Institute of Engineering and Technology",
+        "category": "Course Curriculum",
+        "certification_id": "fKBydjzUSE",
+        "verify_link":"",
+        "topics_covered":["Linux Terminal Handling"]
+    },
+    {
+        "title": "Discrete Mathematics Certificate of Completion",
+        "file_name": "UCS405_Discrete_Mathematical_Structures_Completion_Certificate.png",
+        "issue_date": "20210302",
+        "company_color": "0xFFF44336",
+        "company": "Thapar Institute of Engineering and Technology",
+        "category": "Course Curriculum",
+        "certification_id": "gCnKAnFPMi",
+        "verify_link":"",
+        "topics_covered":["Discrete Mathematics Structures"]
+    },
+    {
+        "title": "Engineering Project Design Certificate of Completion",
+        "file_name": "UTA013_Engineering_Design_Project_I_Completion_Certificate.png",
+        "issue_date": "20210303",
+        "company_color": "0xFFF44336",
+        "company": "Thapar Institute of Engineering and Technology",
+        "category": "Course Curriculum",
+        "certification_id": "1xrtg81QmT",
+        "verify_link":"",
+        "topics_covered":["Project Designing"]
+    },
+    {
+        "title": "Technical Support Fundamental by Google",
+        "file_name": "Technical Support Fundamental by Google.png",
+        "issue_date": "20211231",
+        "company_color": "0xFF0056D2",
+        "company": "Coursera and Google",
+        "category": "Skills",
+        "certification_id": "KD7DWLWUNL35",
+        "verify_link":"https://coursera.org/verify/KD7DWLWUNL35",
+        "topics_covered":[""]
+    },
+    {
+        "title": "HackerRank Problem Solving (Basic)",
+        "file_name": "HackerRank Problem Solving (Basic).png",
+        "issue_date": "20200610",
+        "company_color": "0xFF2EC866",
+        "company": "Hackerrank",
+        "category": "Skills",
+        "certification_id": "AD0CE4699EEB",
+        "verify_link":"https://www.hackerrank.com/certificates/ad0ce4699eeb",
+        "topics_covered":["Problem Solving", "Competitive Programming", "Data Structures", "Algorithms"]
+    },
+    {
+        "title": "Debugging C Code",
+        "file_name": "Debugging C Code.png",
+        "issue_date": "20220210",
+        "company_color": "0xFF0A66C2",
+        "company": "LinkedIn Learning",
+        "category": "Course Curriculum",
+        "certification_id": "AQ81m1S1ZnbjdhQUs5hJ6tFFEgrm",
+        "verify_link":"https://www.linkedin.com/learning/debugging-c-code/",
+        "topics_covered":["C Programming", "Debugging"]
+    },
+    {
+        "title": "Learning C - with exam result",
+        "file_name": "Learning C - with exam result.png",
+        "issue_date": "20220210",
+        "company_color": "0xFF0A66C2",
+        "company": "LinkedIn Learning",
+        "category": "Course Curriculum",
+        "certification_id": "ASapop6sx8h2hFaIbJ9CDYGS4FJd",
+        "verify_link":"https://www.linkedin.com/learning/learning-c-5/",
+        "topics_covered":["C Programming", "Modular Programming"]
+    },
+    {
+        "title": "Learning C",
+        "file_name": "Learning C.png",
+        "issue_date": "20220210",
+        "company_color": "0xFF0A66C2",
+        "company": "LinkedIn Learning",
+        "category": "Course Curriculum",
+        "certification_id": "AQVwApFNrxG7-WPTWfMyAb92_ew0",
+        "verify_link":"https://www.linkedin.com/learning/learning-c-5/",
+        "topics_covered":["C Programming", "Modular Programming"]
+    },
+    {
+        "title": "Learning GitLab",
+        "file_name": "Learning GitLab.png",
+        "issue_date": "20220203",
+        "company_color": "0xFF0A66C2",
+        "company": "LinkedIn Learning",
+        "category": "Course Curriculum",
+        "certification_id": "AVBg0SwHbBXjiK8BOeM9Hl6ZTYYq",
+        "verify_link":"https://www.linkedin.com/learning/learning-gitlab-2019/",
+        "topics_covered":["GitLab"]
+    },
+    {
+        "title": "Learning VS Code Basics",
+        "file_name": "Learning Visual Studio Code.png",
+        "issue_date": "20220209",
+        "company_color": "0xFF0A66C2",
+        "company": "LinkedIn Learning",
+        "category": "Course Curriculum",
+        "certification_id": "AWEY_V2Kn0NbEDR3i2qIZOZHzl7Y",
+        "verify_link":"https://www.linkedin.com/learning/learning-visual-studio-code/",
+        "topics_covered":["Visual Studio"]
+    },
+    {
+        "title": "Foundations of VS Code with Git",
+        "file_name": "Programming Foundations of VCS with Git.png",
+        "issue_date": "20220208",
+        "company_color": "0xFF0A66C2",
+        "company": "LinkedIn Learning",
+        "category": "Course Curriculum",
+        "certification_id": "ASO9MY_jci0te2lL8NgOJLtpy7k2",
+        "verify_link":"https://www.linkedin.com/learning/programming-foundations-version-control-with-git/",
+        "topics_covered":["Version Control"]
+    },
+    {
+        "title": "JPMorgan Chase Program Completion Certificate",
+        "file_name": "JPMorgan Chase Program Completion Certificate.png",
+        "issue_date": "20200504",
+        "company_color": "0xFF004778",
+        "company": "JP Morgan Chase and Co.",
+        "category": "Virtual Internship",
+        "certification_id": "DKNBFdSY4L6QNFWBP",
+        "verify_link":"https://www.theforage.com/virtual-internships/prototype/R5iK7HMxJGBgaSbvk/JP-Morgan-Banking-Technology-Virtual-Program?ref=xHXobkaGMrhrFY8S9#lp",
+        "topics_covered":["Frontend Web Development", "Data Visualisation"]
+    }
+]
