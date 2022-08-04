@@ -1,4 +1,10 @@
+// ignore_for_file: invalid_use_of_protected_member
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+
+import 'tools.dart';
+import 'widgets.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,82 +16,99 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'My Certificates',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        scrollbarTheme: ScrollbarThemeData(
+          thumbColor: MaterialStateProperty.all(Colors.black),
+          trackColor: MaterialStateProperty.all(Colors.transparent),
+          crossAxisMargin: 10,
+        ),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  late int firstPage;
+  late int lastPage;
+  PageController pageController = PageController();
+  var certificates = [];
+  var opacity = 0.0;
 
-  void _incrementCounter() {
+  @override
+  void initState() {
+    firstPage = 0;
+    getCertifications();
+    super.initState();
+  }
+
+  void getCertifications() async {
+    var data = await getLedger("assets/certificate_ledger.json");
     setState(() {
-      _counter++;
+      certificates = data;
+      lastPage = certificates.length;
     });
   }
 
-  void _decrementCounter() {
-    setState(() {
-      _counter--;
-    });
-  }
-
-  void _resetCounter() {
-    setState(() {
-      _counter = 0;
-    });
-  }
-
-  Widget bodyContents() {
-    return Stack(
-      alignment: AlignmentDirectional.topEnd,
-      children: [
-        Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'You have a counter status:',
-              ),
-              Text(
-                '$_counter',
-                style: Theme.of(context).textTheme.headline4,
-              ),
-            ],
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.arrow_circle_up_rounded),
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.arrow_circle_down_rounded),
-                ),
-              ],
-            ),
-            SizedBox(width: MediaQuery.of(context).size.width / 25),
+  Widget printDetails(Map certificate) {
+    return Container(
+      padding: const EdgeInsets.all(30),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+        color: Colors.white,
+        gradient: LinearGradient(
+          stops: const [0.95, 0.95],
+          colors: [
+            Colors.white,
+            Color(int.parse(certificate["company_color"])),
           ],
         ),
-      ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            "${certificate["title"]}",
+            style: Theme.of(context).textTheme.headline5,
+          ),
+          Text(
+            "${certificate["issue_date"]}",
+            style: Theme.of(context).textTheme.headline6,
+            textAlign: TextAlign.right,
+          ),
+          Text("Issuing Organisation: ${certificate["company"]}"),
+          SizedBox(height: MediaQuery.of(context).size.height / 5),
+        ],
+      ),
+    );
+  }
+
+  Widget printCertificates(Map certificate) {
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          Center(child: printImage("assets/${certificate["file_name"]}")),
+          AnimatedOpacity(
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeIn,
+            opacity: opacity,
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: printDetails(certificate),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -96,41 +119,28 @@ class _MyHomePageState extends State<MyHomePage> {
         borderRadius: BorderRadius.circular(30),
       ),
       margin: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width / 10,
-        vertical: MediaQuery.of(context).size.height / 10,
+        horizontal: MediaQuery.of(context).size.width / 15,
+        vertical: MediaQuery.of(context).size.height / 15,
       ),
-      child: bodyContents(),
-    );
-  }
-
-  Widget setOfFloatingActions() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+      child: Stack(
         children: [
-          FloatingActionButton(
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.black,
-            onPressed: _decrementCounter,
-            tooltip: 'Decrement',
-            child: const Icon(Icons.remove),
+          Scrollbar(
+            child: PageView(
+              onPageChanged: (_) => setState(() => opacity = 0),
+              scrollDirection: Axis.vertical,
+              controller: pageController,
+              children: [
+                homeSlide(context),
+                for (var certificate in certificates)
+                  printCertificates(certificate),
+              ],
+            ),
           ),
-          SizedBox(width: 10),
-          FloatingActionButton(
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.black,
-            onPressed: _resetCounter,
-            tooltip: 'Reset',
-            child: const Icon(Icons.refresh),
-          ),
-          SizedBox(width: 10),
-          FloatingActionButton(
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.black,
-            onPressed: _incrementCounter,
-            tooltip: 'Increment',
-            child: const Icon(Icons.add),
+          controlPanel(
+            context,
+            () => nextPage(pageController, firstPage, lastPage),
+            () => previousPage(pageController, firstPage, lastPage),
+            () => homePage(pageController, firstPage, lastPage),
           ),
         ],
       ),
@@ -139,11 +149,29 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.blue[300],
-      body: theBody(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: setOfFloatingActions(),
+    return Stack(
+      children: [
+        Image.network(
+          "https://source.unsplash.com/random",
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height,
+        ),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          body: theBody(),
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () => setState(() => opacity = 1 - opacity),
+            backgroundColor: Colors.transparent.withOpacity(0.2),
+            label: Row(
+              children: const [
+                Icon(Icons.sort),
+                Text("Toggle details"),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
