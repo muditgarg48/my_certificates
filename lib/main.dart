@@ -41,6 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
   late int firstPage;
   late int lastPage;
   PageController pageController = PageController();
+  ScrollController pageScroll = ScrollController();
   var certificates = [];
   var opacity = 0.0;
 
@@ -66,6 +67,8 @@ class _MyHomePageState extends State<MyHomePage> {
     Color companyColor = Color(int.parse(certificate["company_color"]));
     String certificateID = certificate["certification_id"];
     String category = certificate["category"];
+    String verifyLink = certificate["verify_link"];
+    List topics = certificate["topics_covered"];
     return Container(
       margin: EdgeInsets.only(right: MediaQuery.of(context).size.width / 20),
       padding: const EdgeInsets.all(30),
@@ -149,7 +152,25 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               const Icon(Icons.numbers),
               const SizedBox(width: 10),
-              SelectableText("ID: $certificateID"),
+              TextButton(
+                  child: Text("ID: $certificateID"),
+                  onPressed: () => launchURL(verifyLink)),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(Icons.sort),
+                  SizedBox(width: 20),
+                  Text("Topics Covered:"),
+                ],
+              ),
+              for (var topic in topics) Text(topic)
             ],
           ),
           SizedBox(height: MediaQuery.of(context).size.height / 8),
@@ -194,6 +215,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Stack(
         children: [
           Scrollbar(
+            controller: pageScroll,
             child: PageView(
               onPageChanged: (_) => setState(() => opacity = 0),
               scrollDirection: Axis.vertical,

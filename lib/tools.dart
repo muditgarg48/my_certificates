@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 Future<dynamic> getLedger(String link) async {
   var file = await rootBundle.loadString(link);
@@ -42,5 +44,14 @@ void nextPage(PageController pageController, int firstPage, int lastPage) {
       duration: const Duration(seconds: 1),
       curve: Curves.decelerate,
     );
+  }
+}
+
+void launchURL(String url) async {
+  var result = await canLaunchUrlString(url);
+  if (result) {
+    await launchUrlString(url);
+  } else {
+    throw 'Could not launch $url';
   }
 }
