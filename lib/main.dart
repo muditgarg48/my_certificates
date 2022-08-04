@@ -65,7 +65,7 @@ class MyHomePageState extends State<MyHomePage> {
     var data = await getLedger("assets/certificate_ledger.json");
     setState(() {
       certificates = data;
-      lastPage = certificates.length + 1;
+      lastPage = certificates.length;
     });
   }
 

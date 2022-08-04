@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'tools.dart';
 
 Widget printImage(String name) {
@@ -6,20 +9,55 @@ Widget printImage(String name) {
 }
 
 Widget homeSlide(BuildContext context) {
+  var title = Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Text(
+        'My Certificates',
+        style: GoogleFonts.shadowsIntoLight(
+          fontSize: MediaQuery.of(context).size.shortestSide / 10,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'Designed by ',
+            style: GoogleFonts.shadowsIntoLight(
+              fontSize: MediaQuery.of(context).size.shortestSide / 30,
+            ),
+          ),
+          Text(
+            'Flutter ',
+            style: GoogleFonts.shadowsIntoLight(
+              fontSize: MediaQuery.of(context).size.shortestSide / 30,
+              color: Colors.blue,
+            ),
+          ),
+        ],
+      ),
+    ],
+  );
   return Container(
     color: Colors.transparent,
     child: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text(
-            'You have a counter status:',
-          ),
-          Text(
-            'Counter Disabled',
-            style: Theme.of(context).textTheme.headline4,
-          ),
-        ],
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(30),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.network(
+              "https://source.unsplash.com/random",
+              fit: BoxFit.cover,
+            ),
+            BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: title,
+            ),
+          ],
+        ),
       ),
     ),
   );
