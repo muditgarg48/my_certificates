@@ -84,6 +84,7 @@ class MyHomePageState extends State<MyHomePage> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
         color: Colors.white,
+        border: Border.all(color: companyColors[0], width: 3),
         gradient: LinearGradient(
           stops: const [0.95, 0.95],
           colors: [
@@ -96,30 +97,6 @@ class MyHomePageState extends State<MyHomePage> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(width: MediaQuery.of(context).size.width / 6),
-              TextButton(
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      side: const BorderSide(color: Colors.blue),
-                    ),
-                  ),
-                ),
-                onPressed: () => setState(() => opacity = 1 - opacity),
-                child: Row(
-                  children: const [
-                    Text("Close"),
-                    Icon(Icons.clear),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -201,7 +178,30 @@ class MyHomePageState extends State<MyHomePage> {
               for (var topic in topics) Text("+ $topic")
             ],
           ),
-          SizedBox(height: MediaQuery.of(context).size.height / 8),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(width: MediaQuery.of(context).size.width / 6),
+              TextButton(
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      side: const BorderSide(color: Colors.blue),
+                    ),
+                  ),
+                ),
+                onPressed: () => setState(() => opacity = 1 - opacity),
+                child: Row(
+                  children: const [
+                    Text("Close"),
+                    Icon(Icons.clear),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -216,13 +216,17 @@ class MyHomePageState extends State<MyHomePage> {
           Center(
             child: printImage("assets/${certificate["file_name"]}"),
           ),
-          AnimatedOpacity(
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.easeIn,
-            opacity: opacity,
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              child: printDetails(certificate),
+          MouseRegion(
+            onHover: (_) => setState(() => opacity = 1),
+            onExit: (_) => setState(() => opacity = 0),
+            child: AnimatedOpacity(
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeIn,
+              opacity: opacity,
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: printDetails(certificate),
+              ),
             ),
           ),
         ],
@@ -281,16 +285,6 @@ class MyHomePageState extends State<MyHomePage> {
         Scaffold(
           backgroundColor: Colors.transparent,
           body: theBody(),
-          floatingActionButton: FloatingActionButton.extended(
-            onPressed: () => setState(() => opacity = 1 - opacity),
-            backgroundColor: Colors.transparent.withOpacity(0.3),
-            label: Row(
-              children: const [
-                Icon(Icons.sort),
-                Text("Toggle details"),
-              ],
-            ),
-          ),
         ),
       ],
     );
