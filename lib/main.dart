@@ -2,6 +2,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'tools.dart';
 import 'widgets.dart';
@@ -59,7 +60,14 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget printDetails(Map certificate) {
+    String title = certificate["title"];
+    DateTime issueDate = DateTime.parse(certificate["issue_date"]);
+    String issueCompany = certificate["company"];
+    Color companyColor = Color(int.parse(certificate["company_color"]));
+    String certificateID = certificate["certification_id"];
+    String category = certificate["category"];
     return Container(
+      margin: EdgeInsets.only(right: MediaQuery.of(context).size.width / 20),
       padding: const EdgeInsets.all(30),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
@@ -68,24 +76,83 @@ class _MyHomePageState extends State<MyHomePage> {
           stops: const [0.95, 0.95],
           colors: [
             Colors.white,
-            Color(int.parse(certificate["company_color"])),
+            companyColor,
           ],
         ),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "${certificate["title"]}",
-            style: Theme.of(context).textTheme.headline5,
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(width: MediaQuery.of(context).size.width / 6),
+              TextButton(
+                onPressed: () => setState(() => opacity = 1 - opacity),
+                child: Row(
+                  children: const [
+                    Text("Close"),
+                    Icon(Icons.clear),
+                  ],
+                ),
+              ),
+            ],
           ),
-          Text(
-            "${certificate["issue_date"]}",
-            style: Theme.of(context).textTheme.headline6,
-            textAlign: TextAlign.right,
+          const SizedBox(height: 20),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.title_rounded),
+              const SizedBox(width: 10),
+              SelectableText(
+                title,
+                style: const TextStyle(
+                  decoration: TextDecoration.underline,
+                  decorationStyle: TextDecorationStyle.dashed,
+                  color: Colors.transparent,
+                  decorationColor: Colors.black,
+                  shadows: [Shadow(color: Colors.black, offset: Offset(0, -5))],
+                ),
+              ),
+            ],
           ),
-          Text("Issuing Organisation: ${certificate["company"]}"),
-          SizedBox(height: MediaQuery.of(context).size.height / 5),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(width: MediaQuery.of(context).size.width / 8),
+              const Icon(Icons.calendar_month_rounded),
+              const SizedBox(width: 10),
+              SelectableText(DateFormat('yMMMMd').format(issueDate)),
+            ],
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              shape: const StadiumBorder(),
+              primary: companyColor,
+              onPrimary: Colors.white,
+            ),
+            child: SelectableText(issueCompany),
+          ),
+          const SizedBox(height: 20),
+          OutlinedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
+            child: SelectableText(category),
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.numbers),
+              const SizedBox(width: 10),
+              SelectableText("ID: $certificateID"),
+            ],
+          ),
+          SizedBox(height: MediaQuery.of(context).size.height / 8),
         ],
       ),
     );
@@ -97,7 +164,9 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          Center(child: printImage("assets/${certificate["file_name"]}")),
+          Center(
+            child: printImage("assets/${certificate["file_name"]}"),
+          ),
           AnimatedOpacity(
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeIn,
