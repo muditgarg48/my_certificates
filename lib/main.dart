@@ -2,6 +2,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import 'tools.dart';
@@ -159,6 +160,15 @@ class MyHomePageState extends State<MyHomePage> {
               TextButton(
                 child: Text("ID: $certificateID"),
                 onPressed: () => launchURL(verifyLink),
+              ),
+              IconButton(
+                onPressed: () {
+                  Clipboard.setData(ClipboardData(text: certificateID));
+                  var display =
+                      const SnackBar(content: Text("Certificate ID copied"));
+                  ScaffoldMessenger.of(context).showSnackBar(display);
+                },
+                icon: const Icon(Icons.copy_rounded),
               ),
             ],
           ),
