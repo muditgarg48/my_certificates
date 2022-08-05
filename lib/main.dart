@@ -218,27 +218,39 @@ class MyHomePageState extends State<MyHomePage> {
   }
 
   Widget printCertificate(Map certificate) {
+    var printD = AnimatedOpacity(
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeIn,
+      opacity: opacity,
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: printDetails(certificate),
+      ),
+    );
+    var printP = Widgets().printImage("assets/${certificate["file_name"]}");
     return Container(
       padding: const EdgeInsets.all(8.0),
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
           Center(
-            child: printImage("assets/${certificate["file_name"]}"),
+            child: MediaQuery.of(context).size.width < 900
+                ? GestureDetector(
+                    onTap: () => setState(() => opacity = 1),
+                    child: printP,
+                  )
+                : MouseRegion(
+                    onHover: (_) => setState(() => opacity = 1),
+                    onExit: (_) => setState(() => opacity = 0),
+                    child: printP,
+                  ),
           ),
-          MouseRegion(
-            onHover: (_) => setState(() => opacity = 1),
-            onExit: (_) => setState(() => opacity = 0),
-            child: AnimatedOpacity(
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.easeIn,
-              opacity: opacity,
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                child: printDetails(certificate),
-              ),
-            ),
-          ),
+          MediaQuery.of(context).size.width < 900
+              ? printD
+              : MouseRegion(
+                  onEnter: (_) => setState(() => opacity = 1),
+                  child: printD,
+                ),
         ],
       ),
     );
@@ -264,19 +276,21 @@ class MyHomePageState extends State<MyHomePage> {
               scrollDirection: Axis.vertical,
               controller: pageController,
               children: [
-                homeSlide(context),
+                Widgets().homeSlide(context),
                 for (var certificate in certificates)
                   printCertificate(certificate),
                 const Center(child: Text("\"Always keep learning\"")),
               ],
             ),
           ),
-          controlPanel(
-            context,
-            () => nextPage(pageController, firstPage, lastPage),
-            () => previousPage(pageController, firstPage, lastPage),
-            () => homePage(pageController, firstPage, lastPage),
-          ),
+          MediaQuery.of(context).size.width > 900
+              ? Widgets().controlPanel(
+                  context,
+                  () => nextPage(pageController, firstPage, lastPage),
+                  () => previousPage(pageController, firstPage, lastPage),
+                  () => homePage(pageController, firstPage, lastPage),
+                )
+              : const SizedBox.shrink(),
         ],
       ),
     );
@@ -295,6 +309,16 @@ class MyHomePageState extends State<MyHomePage> {
         Scaffold(
           backgroundColor: Colors.transparent,
           body: theBody(),
+          floatingActionButton: MediaQuery.of(context).size.width < 900
+              ? Widgets().floatingControlPanel(
+                  context,
+                  () => nextPage(pageController, firstPage, lastPage),
+                  () => previousPage(pageController, firstPage, lastPage),
+                  () => homePage(pageController, firstPage, lastPage),
+                )
+              : const SizedBox.shrink(),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
         ),
       ],
     );
