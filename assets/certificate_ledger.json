@@ -27,7 +27,7 @@
         "issue_date": "20200504",
         "companies_colors": ["0xFF004778", "0xFF123C13"],
         "companies": ["JP Morgan Chase and Co.","The Forage"],
-        "category": "Virtual Internship",
+        "category": "Virtual Internships",
         "certification_id": "DKNBFdSY4L6QNFWBP",
         "verify_link":"https://www.theforage.com/virtual-internships/prototype/R5iK7HMxJGBgaSbvk/JP-Morgan-Banking-Technology-Virtual-Program?ref=xHXobkaGMrhrFY8S9#lp",
         "topics_covered":["Frontend Web Development", "Data Visualisation"]
